@@ -1,0 +1,206 @@
+﻿@model EventPlanner.ViewModels.EventDetailViewModel;
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col">
+            <h1 class="text-accent">@ViewData["Title"]</h1>
+        </div>
+        @if (Model.OrganizerIds.Contains(Model.CurrentUserId) || this.User.IsInRole("Admin"))
+        {
+            <div class="col-sm-5 d-flex align-items-center justify-content-sm-end">
+                <a class="btn btn-outline-primary mr-2" asp-action="Edit" asp-route-id="@Model.EventId">
+                    <i class="fa-solid fa-pencil"></i> Edit event
+                </a>
+                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteConfirmModal">
+                    <i class="fa-regular fa-trash-can"></i> Delete event
+                </button>
+            </div>
+        }
+    </div>
+    <div class="row mb-2">
+        <div class="col-sm-6 d-flex flex-column">
+            <img src="~/images/@Model.Thumbnail" class="img-fluid rounded" alt="Event image">
+            <small class="text-muted">@Model.PeopleInterested people are interested · @Model.PeopleGoing people are going</small>
+            <p class="mt-2">@Model.Description</p>
+        </div>
+        <div class="col-sm-6">
+            <p><span class="font-weight-bold">Category: </span>@Model.Category.Name</p>
+            <p><span class="font-weight-bold">Location: </span>@Model.Street @Model.Number, @Model.PostalCode @Model.Town, @Model.Country</p>
+            <p><span class="font-weight-bold">Start: </span>@Model.Start.ToLongDateString() at @Model.Start.ToShortTimeString()</p>
+            <p><span class="font-weight-bold">End: </span>@Model.End.ToLongDateString() at @Model.End.ToShortTimeString()</p>
+                <p class="font-weight-bold">Collaborators: </p>
+            <ul class="">
+                @foreach (var collaborator in Model.Collaborations)
+                {
+                    <li>
+                        <span class="pr-2">@collaborator.User.FirstName @collaborator.User.Name</span>
+                        @if (collaborator.Organizer)
+                        {
+                            <span class="badge badge-primary badge-pill">Organizer</span> 
+                        }
+                    </li>
+                }
+            </ul>
+            @if (this.User.Identity.IsAuthenticated){
+                <div class="my-2 row">
+                    <div class="col-12 d-flex">
+                        <button class="btn btn-outline-primary mb-2 flex-sm-grow-0 flex-grow-1" id="toggleFavoriteBtn">
+                            <span id="favoriteBtnIco">
+                               <partial name="_ToggleFavoritePartial.cshtml" model="@Model" />
+                            </span>
+                            Favorite
+                        </button>
+                    </div>
+                    <div class="col-12 d-flex">
+                        <button class="btn btn-outline-primary mb-2 flex-sm-grow-0 flex-grow-1" id="toggleInterestedBtn">
+                            <span id="interestedBtnIco">
+                                <partial name="_ToggleInterestedParital.cshtml" model="@Model" />
+                            </span>
+                            Interested
+                        </button>
+                    </div>
+                    <div class="col-12 d-flex">
+                        <button class="btn btn-outline-primary mb-2 flex-sm-grow-0 flex-grow-1" id="toggleGoingBtn">
+                            <span id="GoingBtnIco">
+                                <partial name="_ToggleGoingPartial.cshtml" model="@Model" />
+                            </span>
+                            Going
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <a class="btn btn-outline-primary mb-2" asp-action="Create" asp-controller="Review" asp-route-eventId="@Model.EventId" asp-route-userId="@Model.CurrentUserId"><i class="fa-solid fa-plus"></i> Write a review</a>
+    }
+    <div class="row border-top mt-2 pt-3" id="reviewsContainer">
+        @if (Model.Reviews.Count > 0)
+        {
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-12">
+                            <small class="text-muted">Review by @review.User.FirstName @review.User.Name written on @review.Date.ToLongDateString()</small>
+                        </div>
+                        <div class="col-12">
+                            <span class="font-weight-bold pr-2">@review.Title</span>
+                            <span>
+                                @for (int i = 0; i <= 4; i++)
+                                {
+                                    if (i >= review.Rating)
+                                    {
+                                        <i class="fa-regular fa-star text-dark text-muted"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-solid fa-star text-warning"></i>
+                                    }
+                                }
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <p>@review.Description</p>
+                        </div>
+                    </div>
+                </div>
+                @if ((this.User.Identity.IsAuthenticated && review.UserId == Model.CurrentUserId) || this.User.IsInRole("admin"))
+                {
+                    <div class="col-2 d-flex justify-content-end">
+                        <div class="row">
+                            <div class="col-12">
+                                <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-controller="Review" asp-route-id="@review.ReviewId"><i class="fa-solid fa-trash-can"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        }
+        else
+        {
+            <div class="col text-center">
+                <h5 class="font-weight-bold text-muted">There are no reviews for this event</h5>
+            </div>
+        }
+    </div>
+
+    @if (this.User.Identity.IsAuthenticated && (Model.OrganizerIds.Contains(Model.CurrentUserId) || this.User.IsInRole("Admin")))
+    {
+        <!-- Delete confirm modal -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content bg-dark-custom text-light">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm delete</h5>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure that you want to delete <span class="font-weight-bold">@Model.Name</span>?</p>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@Model.EventId">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(function () {
+            $("#toggleFavoriteBtn").click(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Event/ToggleFavorite?eventId=@Model.EventId&userId=@Model.CurrentUserId",
+                    success: function (data) {
+                        $("#favoriteBtnIco").html("");
+                        $("#favoriteBtnIco").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+            $("#toggleInterestedBtn").click(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Event/ToggleInterestedStatus?eventId=@Model.EventId&userId=@Model.CurrentUserId",
+                    success: function (data) {
+                        $("#interestedBtnIco").html("");
+                        $("#interestedBtnIco").html(data);
+                        $("#GoingBtnIco").load("/Event/ToggleGoingStatus"); // Updates the going button icon
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+            $("#toggleGoingBtn").click(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/Event/ToggleGoingStatus?eventId=@Model.EventId&userId=@Model.CurrentUserId",
+                    success: function (data) {
+                        $("#GoingBtnIco").html("");
+                        $("#GoingBtnIco").html(data);
+                        $("#interestedBtnIco").load("/Event/ToggleInterestedStatus"); // Updates the interested button icon
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

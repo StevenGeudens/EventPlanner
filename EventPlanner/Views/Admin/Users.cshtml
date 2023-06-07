@@ -1,0 +1,50 @@
+﻿@model EventPlanner.ViewModels.UsersListViewModel;
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="">@ViewData["Title"]</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a asp-action="GrantPremissions" class="btn btn-outline-primary btn-sm">Grant premissions</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-borderless table-striped text-light">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Users[0].FirstName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Users[0].Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Users[0].Birthdate)</th>
+                        <th>@Html.DisplayNameFor(model => model.Users[0].Gender)</th>
+                        <th>@Html.DisplayNameFor(model => model.Users[0].Email)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => user.FirstName)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Birthdate)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Gender)</td>
+                            <td>@Html.DisplayFor(modelItem => user.Email)</td>
+                            <td>
+                                <a class="button" asp-action="UserDetail" asp-route-id="@user.Id">Details</a>
+                                <span class="text-muted mx-3">|</span>
+                                <a class="button text-danger" asp-action="DeleteUser" asp-route-id="@user.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

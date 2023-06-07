@@ -1,0 +1,35 @@
+﻿@using EventPlanner.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<CustomUser> SignInManager
+@inject UserManager<CustomUser> UserManager
+
+<ul class="navbar-nav d-flex">
+@if (SignInManager.IsSignedIn(User))
+{
+        <li class="nav-item dropleft">
+            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-regular fa-user" style="font-size: 1.2rem;"></i>
+        </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a id="manage" class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <span class="text-muted font-weight-bold">My account</span><br />
+                <span class="font-weight-bold">@UserManager.GetUserName(User)</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="dropdown-item btn btn-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </form>
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </li>
+        <li class="nav-item d-flex align-items-center pl-sm-2">
+        <a class="btn btn-outline-primary btn-sm" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>
+}
+</ul>

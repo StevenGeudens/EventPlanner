@@ -1,0 +1,41 @@
+﻿@model EventPlanner.ViewModels.UserDetailViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>@Model.FirstName @Model.Name</h1>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Gender:</p>
+                </div>
+                <div class="col">
+                    <p> @Model.Gender</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Email:</p>
+                </div>
+                <div class="col">
+                    <p> @Model.Email</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Birthdate:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.BirthDate.ToShortDateString()</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @Html.ActionLink("Back", "Users", "Admin")
+        </div>
+    </div>
+</div>

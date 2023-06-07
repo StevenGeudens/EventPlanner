@@ -1,0 +1,57 @@
+﻿@model EventPlanner.ViewModels.ReviewDetailViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>@Model.Title</h1>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Description:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Date:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Date.ToShortDateString() @Model.Date.ToShortTimeString()</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Rating <small>(out of 5)</small>:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Rating</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Written by:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.User</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Review of event:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Event.Name</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <a class="button" asp-action="EventDetail" asp-route-id="@Model.Event.EventId">Back</a>
+        </div>
+    </div>
+</div>

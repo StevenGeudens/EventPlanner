@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+body {
+    font-family: 'Nunito', sans-serif !important;
+    background-color: #1e1e1e;
+}
+
+.star {
+    font-size: 1.7rem;
+    cursor: pointer;
+}
+
+.hero {
+    background-image: linear-gradient(to bottom, #1e1e1e, transparent, #1e1e1e), url('/images/banner.jpg');
+    max-width: 100%;
+    background-position: top;
+    background-repeat: no-repeat;
+    padding: 5rem;
+    position: relative;
+}
+
+.bg-dark-custom {
+    background-color: #1e1e1e !important;
+}

@@ -1,0 +1,16 @@
+﻿@model EventPlanner.ViewModels.UserEventListViewModel;
+
+@foreach (var e in Model.Events)
+{
+    <div class="col-md-4 mb-4">
+        <div class="card text-white shadow-sm border-0">
+            <img src="~/images/@e.Thumbnail" class="card-img-top rounded" alt="@e.Thumbnail" style="height: 12rem; object-fit: cover; filter: brightness(70%);">
+            <div class="card-img-overlay">
+                <h5 class="card-title text-truncate font-weight-bold">@e.Name</h5>
+                <p class="card-text text-truncate">@e.Description</p>
+                <p class="card-text"><span class="badge badge-primary badge-pill">@e.Category.Name</span></p>
+                <a asp-controller="Event" asp-action="Index" asp-route-id="@e.EventId" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+}

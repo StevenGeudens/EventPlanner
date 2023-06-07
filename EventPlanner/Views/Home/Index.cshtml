@@ -1,0 +1,78 @@
+﻿@model EventPlanner.ViewModels.EventListViewModel;
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center hero">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="text-white">
+            <h1 class="mb-3 font-weight-bold">Events</h1>
+            <input type="text" class="form-control-lg rounded-pill px-5 py-4 text-center" id="nameSearchInput" placeholder="Search for a event">
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row d-flex justify-content-end">
+        <div class="col-md-3">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text bg-dark-custom text-light" for="inputGroupSelect01"><i class="fa-solid fa-filter"></i></label>
+                </div>
+                <select asp-items="Model.Categories" class="form-control bg-dark-custom text-light" id="categorySelect">
+                    <option value="0" selected>All</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="eventsContainer">
+        <partial name="_ShowEventsPartial.cshtml" model="@Model" />
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            var categoryId = "";
+            var name = "";
+
+            $("#categorySelect").change(function () {
+                categoryId = $(this).val()
+                $.ajax({
+                    type: "Get",
+                    url: "/Home/Filter?categoryId=" + categoryId + "&name=" + name,
+                    success: function (data) {
+                        $("#eventsContainer").html("");
+                        $("#eventsContainer").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+            delay = null;
+            $("#nameSearchInput").on("input", function () {
+                name = $(this).val();
+                if(delay){
+                    clearTimeout(delay); //cancel the previous delay timer
+                    delay = null;
+                }
+                delay = setTimeout(function () {
+                    $.ajax({
+                        type: "Get",
+                        url: "/Home/Filter?categoryId=" + categoryId + "&name=" + name,
+                        success: function (data) {
+                            $("#eventsContainer").html("");
+                            $("#eventsContainer").html(data);
+                        },
+                        error: function (response) {
+                            console.log(response.responseText);
+                        }
+                    });
+                }, 700);
+            });
+        });
+    </script>
+}
+
+

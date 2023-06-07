@@ -1,0 +1,11 @@
+﻿@model EventPlanner.ViewModels.EventDetailViewModel;
+
+@if (Model.Favorites.Any(f => f.UserId == Model.CurrentUserId))
+{
+    <i class="fa-solid fa-heart"></i>
+}
+else
+{
+    <i class="fa-regular fa-heart"></i>
+}
+

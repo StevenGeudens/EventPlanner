@@ -1,0 +1,102 @@
+﻿@model EventPlanner.ViewModels.AdminEventDetailViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>@Model.Name</h1>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Start date & time:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Start.ToShortDateString() @Model.Start.ToShortTimeString()</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">End date & time:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.End.ToShortDateString() @Model.End.ToShortTimeString()</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Adres:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Street @Model.Number, @Model.PostalCode @Model.Town, @Model.Country</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Category:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Category</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Description:</p>
+                </div>
+                <div class="col">
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="font-weight-bold text-muted ">Thumbnail:</p>
+                </div>
+                <div class="col">
+                    <p>~/images/@Model.Thumbnail</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <img style="max-width: 20rem;" class="d-block rounded" src="~/images/@Model.Thumbnail" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <h2>Reviews</h2>
+            <table class="table table-borderless table-striped text-light" style="table-layout: fixed;">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Reviews[0].Title)</th>
+                        <th>@Html.DisplayNameFor(model => model.Reviews[0].Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.Reviews[0].Date)</th>
+                        <th>@Html.DisplayNameFor(model => model.Reviews[0].Rating)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <tr>
+                            <td>@review.Title</td>
+                            <td class="text-truncate">@review.Description</td>
+                            <td>@review.Date.ToShortDateString() @review.Date.ToShortTimeString()</td>
+                            <td>@review.Rating</td>
+                            <td>
+                                <a class="button" asp-action="ReviewDetail" asp-route-id="@review.ReviewId">Details</a>
+                                <span class="text-muted mx-3">|</span>
+                                <a class="button text-danger" asp-action="DeleteReview" asp-route-id="@review.ReviewId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @Html.ActionLink("Back", "Events", "Admin")
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿@model EventPlanner.ViewModels.CreateReviewViewModel;
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-lg-6 offset-lg-3">
+            <form asp-action="Create">
+                <div class="card bg-dark-custom text-light border">
+                    <div class="card-body">
+                        <h5 class="card-title">Write a review</h5>
+                        <h6 class="card-subtitle mb-4 text-muted">New review for the <span class="font-weight-bold">@Model.Event.Name</span> event</h6>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3 pr-sm-3">
+                                    <label asp-for="Title"></label>
+                                    <input asp-for="Title" type="text" class="form-control bg-dark-custom text-light">
+                                    <small><span asp-validation-for="Title" class="text-danger"></span></small>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="Rating"></label>
+                                    <div>
+                                        <input asp-for="Rating" class="starRadio custom-control-input" type="radio" value="1" required><i class="star fa-regular fa-star text-muted" id="star1"></i>
+                                        <input asp-for="Rating" class="starRadio custom-control-input" type="radio" value="2" required><i class="star fa-regular fa-star text-muted" id="star2"></i>
+                                        <input asp-for="Rating" class="starRadio custom-control-input" type="radio" value="3" required><i class="star fa-regular fa-star text-muted" id="star3"></i>
+                                        <input asp-for="Rating" class="starRadio custom-control-input" type="radio" value="4" required><i class="star fa-regular fa-star text-muted" id="star4"></i>
+                                        <input asp-for="Rating" class="starRadio custom-control-input" type="radio" value="5" required><i class="star fa-regular fa-star text-muted" id="star5"></i>
+                                    </div>
+                                    <small><span asp-validation-for="Rating" class="text-danger"></span></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label asp-for="Description"></label>
+                                    <textarea asp-for="Description" type="text" class="form-control bg-dark-custom text-light"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="EventId" />
+                        <input type="hidden" asp-for="CurrentUserId" />
+                        <button class="btn btn-primary" type="submit" value="Create"><i class="fa-solid fa-paper-plane"></i> Post my review</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Event" asp-route-id="@Model.EventId"><i class="fa-solid fa-arrow-left"></i> Back to event</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/starRater.js"></script>
+}

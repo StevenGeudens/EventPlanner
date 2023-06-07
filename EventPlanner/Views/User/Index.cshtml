@@ -1,0 +1,53 @@
+﻿@model EventPlanner.ViewModels.UserEventListViewModel;
+@{
+    ViewData["Title"] = "My events";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col mb-3">
+            <h1 class="font-weight-bold mb-md-0">@ViewData["Title"]</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 mb-3">
+            <a class="btn btn-outline-primary flex-grow-1" asp-controller="Event" asp-action="Create"><i class="fa-solid fa-plus"></i> New event</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text bg-dark-custom text-light" for="inputGroupSelect01"><i class="fa-solid fa-filter"></i></label>
+                </div>
+                <select class="form-control bg-dark-custom text-light" id="filterSelect">
+                    <option value="All" selected>All</option>
+                    <option value="Favorite">Favorite</option>
+                    <option value="Interested">Interested</option>
+                    <option value="Going">Going</option>
+                    <option value="My events">My events</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="myEventsContainer">
+        <partial name="_ShowMyEventsPartial" model="@Model" />
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(function () {
+            $("#filterSelect").change(function () {
+                $.ajax({
+                    type: "Get",
+                    url: "/User/Filter?filter=" + $(this).val(),
+                    success: function (data) {
+                        $("#myEventsContainer").html("");
+                        $("#myEventsContainer").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

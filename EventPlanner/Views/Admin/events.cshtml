@@ -1,0 +1,47 @@
+﻿@model EventPlanner.ViewModels.EventsListViewModel;
+@{
+    ViewData["Title"] = "Events";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="">@ViewData["Title"]</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-borderless table-striped text-light">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Events[0].Name)</th>
+                        <th>@Html.DisplayNameFor(model => model.Events[0].Start)</th>
+                        <th>@Html.DisplayNameFor(model => model.Events[0].End)</th>
+                        <th>@Html.DisplayNameFor(model => model.Events[0].Category)</th>
+                        <th>@Html.DisplayNameFor(model => model.Events[0].Country)</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var e in Model.Events)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => e.Name)</td>
+                            <td>@e.Start.ToShortDateString() @e.Start.ToShortTimeString()</td>
+                            <td>@e.End.ToShortDateString() @e.End.ToShortTimeString()</td>
+                            <td>@Html.DisplayFor(modelItem => e.Category.Name)</td>
+                            <td>@Html.DisplayFor(modelItem => e.Country)</td>
+                            <td>
+                                <a class="button" asp-action="EventDetail" asp-route-id="@e.EventId">Details</a>
+                                <span class="text-muted mx-3">|</span>
+                                <a class="button" asp-controller="Event" asp-action="Edit" asp-route-id="@e.EventId">Edit</a>
+                                <span class="text-muted mx-3">|</span>
+                                <a class="button text-danger" asp-action="DeleteEvent" asp-route-id="@e.EventId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

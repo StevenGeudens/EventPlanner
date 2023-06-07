@@ -1,0 +1,10 @@
+﻿@model EventPlanner.ViewModels.EventDetailViewModel;
+
+@if (Model.Statuses.Any(s => s.Going == true && s.UserId == Model.CurrentUserId))
+{
+    <i class="fa-solid fa-circle-check"></i>
+}
+else
+{
+    <i class="fa-regular fa-circle-check"></i>
+}

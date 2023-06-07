@@ -1,0 +1,10 @@
+﻿@model EventPlanner.ViewModels.EventDetailViewModel;
+
+@if (Model.Statuses.Any(s => s.Interested == true && s.UserId == Model.CurrentUserId))
+{
+    <i class="fa-solid fa-star"></i>
+}
+else
+{
+    <i class="fa-regular fa-star"></i>
+}

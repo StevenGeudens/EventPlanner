@@ -1,0 +1,160 @@
+﻿@model EventPlanner.ViewModels.EditEventViewModel;
+@{
+    ViewData["Title"] = $"Edit";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="font-weight-bold">Edit @Model.Name</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form asp-action="Edit" enctype="multipart/form-data" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <small><span asp-validation-for="Name" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">Category</label>
+                            <select asp-items="Model.Categories" asp-for="SelectedCategoryId" class="form-control">
+                            </select>
+                            <small><span asp-validation-for="SelectedCategoryId" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label class="control-label">Address</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-4">
+                            <input asp-for="Street" placeholder="Street" class="form-control" />
+                            <small><span asp-validation-for="Street" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input asp-for="Number" placeholder="Number" class="form-control" />
+                            <small><span asp-validation-for="Number" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input asp-for="PostalCode" placeholder="Postal code" class="form-control" />
+                            <small><span asp-validation-for="PostalCode" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input asp-for="Town" placeholder="Town" class="form-control" />
+                            <small><span asp-validation-for="Town" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <select asp-items="Model.Countries" asp-for="SelectedCountry" class="form-control">
+                                <option disabled selected>Country</option>
+                            </select>
+                            <small><span asp-validation-for="SelectedCountry" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label asp-for="Start" class="control-label"></label>
+                            <input asp-for="Start" class="form-control" />
+                            <small><span asp-validation-for="Start" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label asp-for="End" class="control-label"></label>
+                            <input asp-for="End" class="form-control" />
+                            <small><span asp-validation-for="End" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <label asp-for="Collaborations"></label>
+                                <a class="btn btn-outline-primary btn-sm mb-2" asp-action="Edit" asp-controller="Collaboration" asp-route-id="@Model.EventId">Edit collaborations</a>
+                            </div>
+                            <div class="table table-borderless border rounded text-light" style="max-height: 10rem; overflow-x: hidden; overflow-y: scroll;">
+                                <table class="w-100">
+                                    <tbody>
+                                        @foreach (var c in Model.Collaborations)
+                                        {
+                                            <tr>
+                                                <td>@c.User.FirstName @c.User.Name</td>
+                                                <td>@c.User.Email</td>
+                                                @if (c.Organizer)
+                                                {
+                                                    <td><small class="text-primary">Organizer</small></td>
+                                                }
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="Thumbnail"></label>
+                            <div class="custom-file">
+                                <label class="custom-file-label" id="thumbnailInputLabel"><i class="fa-regular fa-image"></i> Choose a new photo to upload</label>
+                                <input asp-for="NewThumbnail" type="file" class="custom-file-input" id="thumbnailInput" />
+                            </div>
+                            <div class="card bg-dark text-white mt-2" style="max-width: 10rem;" id="currentThumbnailCard">
+                                <img src="~/images/@Model.Thumbnail" class="img-fluid rounded card-img" style="filter: brightness(70%);" />
+                                <div class="card-img-overlay p-2">
+                                    <small class="card-text">Current thumbnail</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <a asp-action="Index" asp-route-id="@Model.EventId" class="btn btn-outline-primary mr-2"><i class="fa-solid fa-arrow-left"></i> Back to event</a>
+                            <input type="hidden" asp-for="EventId" value="@Model.EventId" />
+                            <input type="hidden" asp-for="Thumbnail" value="@Model.Thumbnail" />
+                            <button type="submit" class="btn btn-primary flex-sm-grow-0 flex-grow-1" value="Save">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Script to show the uploaded image filename in the label and hide the old thumbnail img
+        const thumbnailInput = document.getElementById('thumbnailInput');
+        const thumbnailInputLabel = document.getElementById('thumbnailInputLabel');
+        const currentThumbnailCard = document.getElementById('currentThumbnailCard');
+
+        thumbnailInput.addEventListener('change', (evt) => {
+            const input = evt.srcElement;
+            const fileName = input.files[0].name;
+            thumbnailInputLabel.innerText = fileName;
+            currentThumbnailCard.style.display = 'none';
+        });
+    </script>
+}

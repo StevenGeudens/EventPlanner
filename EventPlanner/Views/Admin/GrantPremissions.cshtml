@@ -1,0 +1,43 @@
+﻿@model EventPlanner.ViewModels.GrantPremissionsViewModel;
+@{
+    ViewData["Title"] = "Grant Premission";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <form asp-action="GrantPremissions">
+                <div class="card bg-dark-custom text-light border">
+                    <div class="card-body">
+                        <h5 class="card-title">Grant admin permissions</h5>
+                        <h6 class="card-subtitle mb-4 text-muted">Select a user to grant administrator permissions to</h6>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col">
+                                    <label asp-for="Users" class="control-label"></label>
+                                    <select asp-for="UserId" asp-items="Model.Users" class="form-control bg-dark-custom text-light"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col">
+                                    <label asp-for="Roles" class="control-label"></label>
+                                    <select asp-for="RoleId" asp-items="Model.Roles" class="form-control bg-dark-custom text-light"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-primary" type="submit" value="Create">Grant permissions</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+﻿@model EventPlanner.ViewModels.AddeventViewModel;
+@{
+    ViewData["Title"] = "New event";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="font-weight-bold">Create a new event</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form asp-action="Create" enctype="multipart/form-data" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-sm-6">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <small><span asp-validation-for="Name" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="control-label">Category</label>
+                            <select asp-items="Model.Categories" asp-for="SelectedCategoryId" class="form-control">
+                            </select>
+                            <small><span asp-validation-for="SelectedCategoryId" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label class="control-label">Address</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-sm-4">
+                            <input asp-for="Street" placeholder="Street" class="form-control" />
+                            <small><span asp-validation-for="Street" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input asp-for="Number" placeholder="Number" class="form-control" />
+                            <small><span asp-validation-for="Number" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input asp-for="PostalCode" placeholder="Postal code" class="form-control" />
+                            <small><span asp-validation-for="PostalCode" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <input asp-for="Town" placeholder="Town" class="form-control" />
+                            <small><span asp-validation-for="Town" class="text-danger"></span></small>
+                        </div>
+                        <div class="col-sm-2">
+                            <select asp-items="Model.Countries" asp-for="SelectedCountry" class="form-control">
+                                <option disabled selected>Country</option>
+                            </select>
+                            <small><span asp-validation-for="SelectedCountry" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label asp-for="Start" class="control-label"></label>
+                            <input asp-for="Start" class="form-control" />
+                            <small><span asp-validation-for="Start" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label asp-for="End" class="control-label"></label>
+                            <input asp-for="End" class="form-control" />
+                            <small><span asp-validation-for="End" class="text-danger"></span></small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label asp-for="Description"></label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-lg-6">
+                            <label asp-for="Collaboration"></label>
+                            <div class="table table-borderless border rounded text-light">
+                                <table class="w-100">
+                                    <tbody>
+                                        <tr>
+                                            <td>@Model.Collaboration.User.FirstName @Model.Collaboration.User.Name</td>
+                                            <td>@Model.Collaboration.User.Email</td>
+                                            <td><small class="text-primary">Organizer</small></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="Thumbnail"></label>
+                            <div class="custom-file">
+                                <label class="custom-file-label" id="thumbnailInputLabel"><i class="fa-regular fa-image"></i> Choose a photo to upload</label>
+                                <input asp-for="Thumbnail" type="file" class="custom-file-input" id="thumbnailInput" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary flex-sm-grow-0 flex-grow-1" value="Create">Create event</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script> 
+        // Script to show the uploaded image filename in the label
+        const thumbnailInput = document.getElementById('thumbnailInput');
+        const thumbnailInputLabel = document.getElementById('thumbnailInputLabel');
+
+        thumbnailInput.addEventListener('change', (evt) => {
+            const input = evt.srcElement;
+            const fileName = input.files[0].name;
+            thumbnailInputLabel.innerText = fileName;
+        });
+    </script>
+}
+
+
